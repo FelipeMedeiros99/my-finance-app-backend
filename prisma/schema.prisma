@@ -18,7 +18,7 @@ datasource db {
 model User{
   id              Int        @id @default(autoincrement())
   email           String     @db.VarChar(200) @unique
-  password        String 
+  password        String     @db.VarChar(200)
 
   transaction     Transaction[]
   category        Category[]
