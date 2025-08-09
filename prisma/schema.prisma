@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User{
+  id              Int        @id @default(autoincrement())
+  email           String     @db.VarChar(200) @unique
+  password        String 
+
+  transaction     Transaction[]
+  category        Category[]
+
+  @@map("user")
+}
+
+enum TransactionType{
+  EXPENSE
+  INCOME
+}
+
+model Category{
+  id            Int               @id @default(autoincrement())
+  name          String     
+  type          TransactionType
+
+  userId        Int
+  user          User              @relation(fields: [userId], references: [id])
+
+  transaction   Transaction[]
+
+  @@map("category")
+}
+
+// enum Recurrence{
+//   WEEKLY
+//   FORTNIGHTLY
+//   MONTHLY
+//   QUARTERLY
+//   BIANNUALLY
+//   ANNUALLY
+// }
+
+model Transaction{
+  id            Int               @id @default(autoincrement())
+  description   String            @db.VarChar(300)
+  value         Decimal           @db.Decimal(10,2)
+  type          TransactionType
+  isComplete    Boolean           
+  dueDate       DateTime
+  createdAt     DateTime          @default(now())
+  
+  userId        Int
+  user          User              @relation(fields: [userId], references: [id])
+
+  categoryId    Int
+  category      Category          @relation(fields: [categoryId], references: [id])
+
+
+  @@map("transaction")
+}
+
