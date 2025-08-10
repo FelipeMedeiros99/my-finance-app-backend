@@ -4,21 +4,29 @@ import { CreateUserDto } from "./user.dto";
 
 @Injectable()
 export class UserRepository {
-  constructor (private readonly prisma: PrismaService){}
+  constructor(private readonly prisma: PrismaService) { }
 
-  async getUsers() {
-    const users = await this.prisma.user.findMany();
-    return users;
+  async findAll() {
+    return await this.prisma.user.findMany({
+      select: {
+        email: true,
+        id: true,
+      }
+    });
   }
 
-  async createNewUser(userData: CreateUserDto){
-    await this.prisma.user.create({
+  async create(email: string, password: string) {
+    return await this.prisma.user.create({
       data: {
-        email: userData.email,
-        password: userData.password
+        email: email,
+        password: password
       }
     })
   }
 
-
+  async findByEmail(email: string) {
+    return await this.prisma.user.findFirst({
+      where: { email: email }
+    })
+  }
 }
