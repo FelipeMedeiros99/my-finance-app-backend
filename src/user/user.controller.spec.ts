@@ -1,39 +1,3 @@
-// import { Test, TestingModule } from "@nestjs/testing";
-// import { UserController } from "./user.controller"
-// import { UserService } from "./user.service";
-// import { PrismaService } from "../prisma/prisma.service";
-// import { UserRepository } from "./user.repository";
-// import { CreateUserDto } from "./user.dto";
-// import { HttpException, HttpStatus } from "@nestjs/common";
-
-// describe("user unit tests", ()=>{
-//   let userController: UserController;
-//   let userService: UserService;
-//   let userRepository: UserRepository;
-
-
-//   beforeEach(async ()=>{
-//     const user: TestingModule = await Test.createTestingModule({
-//       controllers: [UserController],
-//       providers: [UserService, PrismaService, UserRepository],
-//     }).compile();
-
-//     userController = user.get(UserController);  
-//     userService = user.get(UserService);
-//     userRepository = user.get(UserRepository);
-
-//     describe("UserRepository Tests", ()=>{
-
-//       it('Should return "bad request"', async()=>{
-//         jest.spyOn(userRepository, "create").mockResolvedValue({email: "", password: "", id: -1})
-//         const creationUser = await userController.create({} as CreateUserDto)
-//         expect(creationUser).rejects.toThrow(new HttpException("Error", HttpStatus.BAD_REQUEST))
-//       })
-//     })
-//   })
-// })
-
-
 import { Test, TestingModule } from "@nestjs/testing";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserRepository } from "./user.repository";
