@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "../generated/prisma";
 import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
@@ -9,13 +9,11 @@ const randomChoiche = (options: any[])=>{
 }
 
 const fakeUsers = async () =>{
-  for (let i = 0; i < 5; i++) {
-    const password = faker.internet.password();
+  for (let i = 0; i < 10; i++) {
     await prisma.user.create({
       data: {
         email: faker.internet.email(),
-        password: password,
-        confirmPassword: password
+        password: faker.internet.password(),
       },
     });
   }
