@@ -19,6 +19,16 @@ export class UserService{
     }
   }
 
+  async findUserByEmail(email: string){
+    try{
+      const user = await this.userRepository.findByEmail(email);
+      return user;
+    }catch(e){
+      this.logger.error(`Error searching for user: ${e}`)
+      throw new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   async createUser(createUserData: CreateUserDto){
     const {password, confirmPassword, email} = createUserData;
     
