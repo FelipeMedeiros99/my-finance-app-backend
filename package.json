@@ -17,7 +17,7 @@
     "seed:test": "dotenv -e .env.test -- npx prisma db seed",
     "generate:test": "dotenv -e .env.test -- npx prisma generate",
     "studio:test": "dotenv -e .env.test -- npx prisma studio",
-    "test":       "npm run reset:test && dotenv -e .env.test jest --verbose",
+    "test": "npm run reset:test && dotenv -e .env.test jest --verbose",
     "test:watch": "npm run reset:test && dotenv -e .env.test jest --watch --verbose",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -29,6 +29,7 @@
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/jwt": "^11.0.0",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.13.0",
     "bcrypt": "^6.0.0",
