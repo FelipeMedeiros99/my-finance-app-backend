@@ -3,10 +3,14 @@ import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from "bcrypt";
 import { CreateUserDto } from "./user.dto";
 import { UserRepository } from "./user.repository";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) { }
+  constructor(
+    private userRepository: UserRepository,
+    private jwtService: JwtService
+  ){}
   private readonly logger = new Logger(UserService.name);
 
   async findAllUsers() {
@@ -60,8 +64,9 @@ export class UserService {
       const isPasswordCorrect = await bcrypt.compare(password, user?.password);
       if(!isPasswordCorrect) throw new HttpException("Incorrect password", HttpStatus.UNAUTHORIZED)
 
-      return { email: user.email, id: user.id }
-
+      return {
+        access_token: await this.jwtService.signAsync({email: user.email, id: user.id})
+      }
     } catch (e) {
       if (e instanceof HttpException) throw e;
       this.logger.error("Error while test user: ", e)

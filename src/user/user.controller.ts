@@ -1,12 +1,14 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, LoginUserDto } from "./user.dto";
 import * as bcrypt from "bcrypt";
+import { UserGuard } from "./user.guard";
 
 @Controller("user")
 export class UserController{
-  constructor(private readonly userService: UserService){}
+  constructor(private readonly userService: UserService){ }
 
+  // @UseGuards(UserGuard)
   // @Get("all")
   // async getAll(){
   //   if(process.env.ENV==="DEV"){
