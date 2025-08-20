@@ -1,16 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from "bcrypt";
-import { CreateUserDto } from "./user.dto";
 import { UserRepository } from "./user.repository";
 import { JwtService } from "@nestjs/jwt";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable()
 export class UserService {
   constructor(
     private userRepository: UserRepository,
     private jwtService: JwtService
-  ){}
+  ) { }
   private readonly logger = new Logger(UserService.name);
 
   async findAllUsers() {
@@ -62,10 +62,10 @@ export class UserService {
       if (!user) throw new HttpException("Email not found", HttpStatus.NOT_FOUND);
 
       const isPasswordCorrect = await bcrypt.compare(password, user?.password);
-      if(!isPasswordCorrect) throw new HttpException("Incorrect password", HttpStatus.UNAUTHORIZED)
+      if (!isPasswordCorrect) throw new HttpException("Incorrect password", HttpStatus.UNAUTHORIZED)
 
       return {
-        access_token: await this.jwtService.signAsync({email: user.email, id: user.id})
+        access_token: await this.jwtService.signAsync({ email: user.email, id: user.id })
       }
     } catch (e) {
       if (e instanceof HttpException) throw e;
