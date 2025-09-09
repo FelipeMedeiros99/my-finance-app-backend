@@ -6,27 +6,18 @@ import { PrismaService } from "../prisma/prisma.service"
 export class UserRepository {
   constructor(private readonly prisma: PrismaService) { }
 
-  async findAll() {
-    return await this.prisma.user.findMany({
-      select: {
-        email: true,
-        id: true,
-      }
-    });
-  }
-
-  async create(email: string, password: string) {
+  async create(username: string, password: string) {
     return await this.prisma.user.create({
       data: {
-        email: email,
+        username: username,
         password: password
       }
     })
   }
 
-  async findByEmail(email: string) {
+  async findUserByUsername(username: string) {
     return await this.prisma.user.findFirst({
-      where: { email: email }
+      where: { username }
     })
   }
 }
