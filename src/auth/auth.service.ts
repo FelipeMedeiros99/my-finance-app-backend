@@ -13,10 +13,17 @@ export class AuthService {
   ) { }
   private readonly logger = new Logger(AuthService.name);
 
+
   async createUser(createUserData: CreateUserDto) {
     const { password, confirmPassword, username } = createUserData;
 
     try {
+      const usernameRegex = /^[a-zA-Z0-9._]+$/;
+
+      if(username.length < 3 || username.length > 200 || !usernameRegex.test(username)){
+        throw new HttpException("Invalid username", HttpStatus.BAD_REQUEST);
+      }
+
       if (password !== confirmPassword) {
         throw new HttpException("Passwords do not match. Please try again.", HttpStatus.BAD_REQUEST);
       }
@@ -45,7 +52,7 @@ export class AuthService {
       if (!isPasswordCorrect) throw new HttpException("Incorrect password", HttpStatus.UNAUTHORIZED)
 
       return {
-        access_token: await this.jwtService.signAsync({ username: user.username, id: user.id })
+        access_token: await this.jwtService.signAsync({ username: user.username, id: user.id }),
       }
     } catch (e) {
       if (e instanceof HttpException) throw e;
