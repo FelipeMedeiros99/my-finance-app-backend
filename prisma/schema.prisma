@@ -24,9 +24,15 @@ model User{
   @@map("user")
 }
 
+enum CategoryType{
+  INCOME
+  EXPENSE
+}
+
 model Category{
   id              Int        @id @default(autoincrement())
   name            String     @db.VarChar(30) @unique
+  type            CategoryType
 
   userId          Int
   user            User       @relation(fields: [userId], references: [id])
