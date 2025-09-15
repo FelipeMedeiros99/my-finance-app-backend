@@ -32,6 +32,8 @@ export class CategoryService {
 
   async create(userId: number, data: CreateCategoryDto) {
     try {
+      if(data.type !== "INCOME" && data.type !== "EXPENSE") throw new HttpException("Invalid type", HttpStatus.BAD_REQUEST);      
+      
       const doesCategoryExists = await this.categoryRepository.findByName(userId, data.name);
       if (doesCategoryExists) {
         throw new HttpException("Category already exists", HttpStatus.CONFLICT);

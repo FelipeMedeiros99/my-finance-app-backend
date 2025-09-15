@@ -36,6 +36,7 @@ export class CategoryRepository {
     return await this.prisma.category.create({
       data: {
         name: data.name,
+        type: data.type,
         userId: userId
       }
     })
