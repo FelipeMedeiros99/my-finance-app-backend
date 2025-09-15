@@ -40,7 +40,7 @@ export class CategoryController {
     return this.categoryService.create(userData.id, body);
   }
 
-  @Put("update/:id")
+  @Put(":id")
   update(@Param("id", ParseIntPipe) id: number, @Body() body: CreateCategoryDto, @Headers() header: any) {
     const token = header.authorization.split(" ")[1];
     const userData = this.jwtService.decode(token) as UserDataToken;
@@ -48,11 +48,11 @@ export class CategoryController {
     return this.categoryService.update(userData.id, id, body);
   }
 
-  @Delete("delete/:id")
+  @Delete(":id")
   delete(@Param("id", ParseIntPipe) id: number, @Headers() header: any){
+    
     const token = header.authorization.split(" ")[1];
     const userData = this.jwtService.decode(token) as UserDataToken;
-
     return this.categoryService.delete(userData.id, id);
   }
 }
