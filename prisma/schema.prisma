@@ -19,7 +19,20 @@ model User{
   username        String     @db.VarChar(200) @unique
   password        String     @db.VarChar(200)
 
+  categories      Category[]
 
   @@map("user")
+}
+
+model Category{
+  id              Int        @id @default(autoincrement())
+  name            String     @db.VarChar(30) @unique
+
+  userId          Int
+  user            User       @relation(fields: [userId], references: [id])
+
+
+  @@unique([name, userId])
+  @@map("category")
 }
 
