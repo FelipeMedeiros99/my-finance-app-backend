@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
-import { FinancialModule } from './financial/financial.module';
 import { UserModule } from './user/user.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
-    FinancialModule,
+    CategoryModule, 
     JwtModule.register({
       global: true,
       secret: process.env.SECRET
-    }), 
+    }),
   ],
   controllers: [],
   providers: [],
