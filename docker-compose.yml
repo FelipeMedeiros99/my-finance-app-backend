@@ -1,0 +1,46 @@
+services:
+  postgres: 
+    image: postgres
+    container_name: financial-control-db
+    restart: always
+
+    env_file: 
+      - .env
+    
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - financial-control
+
+  financial-control-backend:
+    build: .
+    image: financial-control-backend
+    container_name: financial-control-backend
+    restart: always
+
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      - postgres
+    networks:
+      - financial-control
+    command: sh -c "npx prisma migrate deploy && npm run start:prod"
+      
+
+volumes:
+  postgres_data:
+
+networks:
+  financial-control:
