@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 
 import { CategoryRepository } from './category.repository';
 import { CreateCategoryDto } from './dto/create-category-dto';
+import { UpdateCategoryDto } from './dto/update-category-dto';
 
 @Injectable()
 export class CategoryService {
@@ -46,7 +47,7 @@ export class CategoryService {
     }
   }
 
-  async update(userId: number, categoryId: number, data: CreateCategoryDto) {
+  async update(userId: number, categoryId: number, data: UpdateCategoryDto) {
     try {
       const doesCategoryExists = await this.categoryRepository.findById(userId, categoryId);
       if (!doesCategoryExists) {

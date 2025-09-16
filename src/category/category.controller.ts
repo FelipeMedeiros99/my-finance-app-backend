@@ -3,6 +3,7 @@ import { CategoryService } from './category.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { CreateCategoryDto } from './dto/create-category-dto';
+import { UpdateCategoryDto } from './dto/update-category-dto';
 
 
 type UserDataToken = {
@@ -41,7 +42,7 @@ export class CategoryController {
   }
 
   @Put(":id")
-  update(@Param("id", ParseIntPipe) id: number, @Body() body: CreateCategoryDto, @Headers() header: any) {
+  update(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateCategoryDto, @Headers() header: any) {
     const token = header.authorization.split(" ")[1];
     const userData = this.jwtService.decode(token) as UserDataToken;
 
