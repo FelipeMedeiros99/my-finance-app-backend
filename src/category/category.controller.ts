@@ -32,7 +32,7 @@ export class CategoryController {
     return this.categoryService.find(userData.id, id);
   }
 
-  @Post("new")
+  @Post()
   create(@Body() body: CreateCategoryDto, @Headers() header: any) {
     const token = header.authorization.split(" ")[1];
     const userData = this.jwtService.decode(token) as UserDataToken;
