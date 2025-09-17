@@ -25,7 +25,7 @@ export class CategoryRepository {
   }
 
   async findById(userId: number, categoryId: number) {
-    return await this.prisma.category.findFirst({
+    return await this.prisma.category.count({
       where: {
         id: categoryId,
         userId: userId,
