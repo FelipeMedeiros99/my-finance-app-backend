@@ -20,6 +20,7 @@ model User{
   password        String     @db.VarChar(200)
 
   categories      Category[]
+  account         Account[]
 
   @@map("user")
 }
@@ -40,5 +41,20 @@ model Category{
 
   @@unique([name, userId])
   @@map("category")
+}
+
+model Account{
+  id              Int        @id @default(autoincrement())
+  name            String     @db.VarChar(30)
+  openingBalance  Decimal    @db.Decimal(10,2) @default(0)
+
+
+  userId          Int
+  user            User       @relation(fields: [userId], references: [id])
+
+
+  @@unique([name, userId])
+
+  @@map("account")
 }
 
