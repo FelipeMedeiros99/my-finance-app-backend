@@ -35,7 +35,7 @@ export class CategoryService {
     try {
       if(data.type !== "INCOME" && data.type !== "EXPENSE") throw new HttpException("Invalid type", HttpStatus.BAD_REQUEST);      
       
-      const doesCategoryExists = await this.categoryRepository.findByName(userId, data.name);
+      const doesCategoryExists = await this.categoryRepository.doesExistByName(userId, data.name);
       if (doesCategoryExists) {
         throw new HttpException("Category already exists", HttpStatus.CONFLICT);
       }
@@ -53,7 +53,7 @@ export class CategoryService {
       if (!doesCategoryExists) {
         throw new HttpException("Category doesn't exists", HttpStatus.NOT_FOUND);
       }
-      const doesNameAlreadyExists = await this.categoryRepository.findByName(userId, data.name);
+      const doesNameAlreadyExists = await this.categoryRepository.doesExistByName(userId, data.name);
       if (doesNameAlreadyExists) {
         throw new HttpException("Name already exists", HttpStatus.CONFLICT);
       }
