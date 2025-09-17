@@ -7,5 +7,6 @@ export class CreateAccountDto {
   name: string;
 
   @IsNumber()
+  @IsNotEmpty()
   openingBalance: number;
 }

@@ -23,6 +23,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(GetUserDataMiddleware)
-      .forRoutes("category")
+      .forRoutes("category", "account")
   }
 }

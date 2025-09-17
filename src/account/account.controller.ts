@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UsePipes, ParseIntPipe, Put } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
@@ -8,27 +8,32 @@ export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
   @Post()
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountService.create(createAccountDto);
+  create(@Body() createAccountDto: CreateAccountDto, @Request() req: any) {
+    const userData = req.user;
+    return this.accountService.create(userData.id, createAccountDto);
   }
 
   @Get()
-  findAll() {
-    return this.accountService.findAll();
+  findAll(@Request() req: any) {
+    const userData = req.user;
+    return this.accountService.findAll(userData.id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.accountService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number, @Request() req: any) {
+    const userData = req.user;
+    return this.accountService.findOne(userData.id, id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountService.update(+id, updateAccountDto);
+  @Put(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateAccountDto: UpdateAccountDto, @Request() req: any) {
+    const userData = req.user;
+    return this.accountService.update(userData.id, id, updateAccountDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.accountService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number, @Request() req: any) {
+    const userData = req.user;
+    return this.accountService.remove(userData.id, id);
   }
 }
