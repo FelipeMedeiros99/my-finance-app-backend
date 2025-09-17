@@ -19,7 +19,7 @@ export class CategoryController {
     private readonly jwtService: JwtService
   ) {}
 
-  @Get("all")
+  @Get()
   findAll(@Request() req: any) {
     const userData = req.user;
     return this.categoryService.findAll(userData.id);
