@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Headers, Param, ParseIntPipe, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { JwtService } from '@nestjs/jwt';
 import { CreateCategoryDto } from './dto/create-category-dto';
 import { UpdateCategoryDto } from './dto/update-category-dto';
 
@@ -15,8 +14,7 @@ type UserDataToken = {
 @UseGuards(AuthGuard)
 export class CategoryController {
   constructor(
-    private readonly categoryService: CategoryService,
-    private readonly jwtService: JwtService
+    private readonly categoryService: CategoryService
   ) {}
 
   @Get()
