@@ -21,6 +21,7 @@ model User{
 
   categories      Category[]
   account         Account[]
+  transaction     Transaction[]
 
   @@map("user")
 }
@@ -38,6 +39,7 @@ model Category{
   userId          Int
   user            User       @relation(fields: [userId], references: [id])
 
+  transaction     Transaction[]
 
   @@unique([name, userId])
   @@map("category")
@@ -52,9 +54,30 @@ model Account{
   userId          Int
   user            User       @relation(fields: [userId], references: [id])
 
+  transaction         Transaction[]
 
   @@unique([name, userId])
 
   @@map("account")
 }
 
+model Transaction{
+  id              Int           @id @default(autoincrement())
+  descriptioin    String        @db.VarChar(30)
+  value           Decimal       @db.Decimal(10,2)
+  dueData         DateTime
+  type            CategoryType
+  wasConfirm      Boolean       @default(false)
+
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id])
+
+
+  categoryId      Int
+  category        Category      @relation(fields: [categoryId], references: [id])
+
+  accountId       Int
+  account         Account       @relation(fields: [accountId], references: [id])
+
+  @@map("transaction")
+}
