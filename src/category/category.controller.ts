@@ -23,6 +23,12 @@ export class CategoryController {
     return this.categoryService.findAll(userData.id);
   }
 
+  @Get("names")
+  findNames(@Request() req: any) {
+    const userData = req.user;
+    return this.categoryService.findNames(userData.id);
+  }
+
   @Get(":id")
   find(@Param("id", ParseIntPipe) id: number, @Request() req: any) {
     const userData = req.user;

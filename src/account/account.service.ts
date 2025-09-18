@@ -32,6 +32,16 @@ export class AccountService {
     }
   }
 
+  async findNames(userId: number) {
+    try{
+      return await this.accountRepository.findNames(userId)
+    }catch(e){
+      if(e instanceof HttpException) throw e;
+      this.logger.error("error while trying to find all accounts")
+      throw new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async findOne(userId: number, accountId: number) {
     try{
       return await this.accountRepository.findById(userId, accountId)

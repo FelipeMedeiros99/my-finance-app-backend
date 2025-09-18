@@ -19,6 +19,12 @@ export class AccountController {
     return this.accountService.findAll(userData.id);
   }
 
+  @Get("names")
+  findNames(@Request() req: any) {
+    const userData = req.user;
+    return this.accountService.findNames(userData.id);
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number, @Request() req: any) {
     const userData = req.user;

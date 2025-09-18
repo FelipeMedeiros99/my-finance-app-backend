@@ -15,6 +15,17 @@ export class CategoryRepository {
     })
   }
 
+  async findNames(userId: number) {
+    return await this.prisma.category.findMany({
+      where: {
+        userId: userId
+      },
+      select: {
+        name: true
+      }
+    })
+  }
+
   async doesExistByName(userId: number, categoryName: string) {
     return await this.prisma.category.count({
       where: {

@@ -34,6 +34,17 @@ export class AccountRepository {
     })
   }
 
+  async findNames(userId: number) {
+    return await this.prisma.account.findMany({
+      where: {
+        userId
+      },
+      select: {
+        name: true
+      }
+    })
+  }
+
   async findById(userId: number, accountId: number) {
     return await this.prisma.account.findFirst({
       where: {

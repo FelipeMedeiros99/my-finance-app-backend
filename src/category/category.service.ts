@@ -21,6 +21,16 @@ export class CategoryService {
     }
   }
 
+  async findNames(userId: number) {
+    try {
+      return await this.categoryRepository.findNames(userId);
+    } catch (e) {
+      if (e instanceof HttpException) throw e;
+      this.logger.error("Error while test user: ", e)
+      throw new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async find(userId: number, categoryId: number) {
     try {
       return await this.categoryRepository.findById(userId, categoryId);
