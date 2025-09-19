@@ -21,7 +21,8 @@ export class CategoryRepository {
         userId: userId
       },
       select: {
-        name: true
+        name: true,
+        id: true,
       }
     })
   }

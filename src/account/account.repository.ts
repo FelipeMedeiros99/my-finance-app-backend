@@ -40,7 +40,8 @@ export class AccountRepository {
         userId
       },
       select: {
-        name: true
+        name: true,
+        id: true
       }
     })
   }
