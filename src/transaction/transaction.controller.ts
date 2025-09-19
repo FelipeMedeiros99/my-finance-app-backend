@@ -15,9 +15,7 @@ export class TransactionController {
 
   @Get()
   findAll(@Request() req: any, @Query() query: any) {
-    console.log(query)
     const {date, type} = query;
-    console.log({date, type})
     const userData = req.user;
     return this.transactionService.findAll(userData.id, date, type);
   }
