@@ -11,6 +11,7 @@ export class TransactionService {
 
 
   async create(userId: number, createTransactionDto: CreateTransactionDto) {
+    console.log(createTransactionDto.dueDate)
     try {
       const transactions: Omit<Transaction, "id">[] = [];
       for (let i = 0; i < createTransactionDto.installments; i++) {
@@ -20,7 +21,7 @@ export class TransactionService {
         const year = newDate.getFullYear();
         const month = (newDate.getMonth() + 1).toString().padStart(2, '0');
         const day = newDate.getDate().toString().padStart(2, '0');
-        const formatedDate = `${year}-${month}-${day}`;
+        const formatedDate = new Date(`${year}-${month}-${day}`);
 
         let { accountId, categoryId, description, dueDate, type, value, wasConfirm } = createTransactionDto;
 
@@ -44,9 +45,9 @@ export class TransactionService {
     }
   }
 
-  findAll(userId: number) {
+  findAll(userId: number, date?: Date, type?: "INCOME"|"EXPENSE") {
     try{
-      return this.transactionRepository.findAll(userId)
+      return this.transactionRepository.findAll(userId, date, type)
     } catch (e) {
       if (e instanceof HttpException) throw e;
       this.logger.error("Error while get transactions: ", e)
@@ -59,7 +60,7 @@ export class TransactionService {
   }
 
   update(userId: number, id: number, updateTransactionDto: UpdateTransactionDto) {
-    // return this.transactionRepository.findAll()
+    return this.transactionRepository.update(userId, id, updateTransactionDto)
   }
 
   remove(userId: number, id: number) {

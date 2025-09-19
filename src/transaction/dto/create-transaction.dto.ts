@@ -21,8 +21,7 @@ export class CreateTransactionDto{
 
   @IsString()
   @IsNotEmpty()
-  @Matches(/^[\d]{4}-[\d]{1,2}-[\d]{1,2}$/)
-  dueDate: string;
+  dueDate: Date;
 
   @IsNotEmpty()
   @IsIn(["INCOME", "EXPENSE"])

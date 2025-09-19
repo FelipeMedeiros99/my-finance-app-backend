@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Query, Put } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
@@ -14,9 +14,12 @@ export class TransactionController {
   }
 
   @Get()
-  findAll(@Request() req: any, ) {
+  findAll(@Request() req: any, @Query() query: any) {
+    console.log(query)
+    const {date, type} = query;
+    console.log({date, type})
     const userData = req.user;
-    return this.transactionService.findAll(userData.id);
+    return this.transactionService.findAll(userData.id, date, type);
   }
 
   // @Get(':id')
@@ -25,11 +28,11 @@ export class TransactionController {
   //   return this.transactionService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Request() req: any, @Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {
-  //   const userData = req.user;
-  //   return this.transactionService.update(+id, updateTransactionDto);
-  // }
+  @Put(':id')
+  update(@Request() req: any, @Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {
+    const userData = req.user;
+    return this.transactionService.update(userData.id, +id, updateTransactionDto);
+  }
 
   // @Delete(':id')
   // remove(@Request() req: any, @Param('id') id: string) {

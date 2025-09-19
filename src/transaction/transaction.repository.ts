@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Transaction } from '@prisma/client';
+import { Prisma, Transaction } from '@prisma/client';
 
 @Injectable()
 export class TransactionRespository {
@@ -30,10 +30,31 @@ export class TransactionRespository {
     });
   }
 
-  findAll(userId:number) {
+  findAll(userId: number, date?: Date, type?: "INCOME"|"EXPENSE") {
+    const whereClause: Prisma.TransactionWhereInput = { userId };
+
+    if (date) {
+      date = new Date(date);
+      const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
+      const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 1)
+      whereClause.dueDate = {
+        gte: startDate,
+        lt: endDate
+      }
+    }
+    if (type) {
+      whereClause.type = type;
+    }
+
+
     return this.prisma.transaction.findMany({
-      where: {
-        userId: userId
+      where: whereClause,
+      include: {
+        category: true,
+        account: true
+      },
+      orderBy: {
+        description: "asc"
       }
     });
   }
@@ -42,8 +63,22 @@ export class TransactionRespository {
     return `This action returns a #${id} transaction`;
   }
 
-  update(userId:number, id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
+  async update(userId:number, id: number, updateTransactionDto: UpdateTransactionDto) {
+    return await this.prisma.transaction.update({
+      where: {
+        userId,
+        id
+      },
+      data: {
+        wasConfirm: updateTransactionDto.wasConfirm,
+        accountId: updateTransactionDto.accountId,
+        categoryId: updateTransactionDto.categoryId,
+        description: updateTransactionDto.description,
+        value: updateTransactionDto.value,
+        dueDate: updateTransactionDto.dueDate,
+        type: updateTransactionDto.type
+      }
+    })
   }
 
   remove(userId:number, id: number) {
