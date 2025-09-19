@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Headers, Param, ParseIntPipe, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, Param, ParseIntPipe, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateCategoryDto } from './dto/create-category-dto';
@@ -24,9 +24,9 @@ export class CategoryController {
   }
 
   @Get("names")
-  findNames(@Request() req: any) {
+  findNames(@Request() req: any, @Query("type") type: string) {
     const userData = req.user;
-    return this.categoryService.findNames(userData.id);
+    return this.categoryService.findNames(userData.id, type);
   }
 
   @Get(":id")

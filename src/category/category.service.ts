@@ -21,9 +21,9 @@ export class CategoryService {
     }
   }
 
-  async findNames(userId: number) {
+  async findNames(userId: number, type?: string) {
     try {
-      return await this.categoryRepository.findNames(userId);
+      return await this.categoryRepository.findNames(userId, type);
     } catch (e) {
       if (e instanceof HttpException) throw e;
       this.logger.error("Error while test user: ", e)

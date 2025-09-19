@@ -15,11 +15,14 @@ export class CategoryRepository {
     })
   }
 
-  async findNames(userId: number) {
+  async findNames(userId: number, type?: string) {
+    const whereClause = {
+      userId: userId,
+    }
+    if(type) whereClause["type"]= type;
+    
     return await this.prisma.category.findMany({
-      where: {
-        userId: userId
-      },
+      where: whereClause,
       select: {
         name: true,
         id: true,
