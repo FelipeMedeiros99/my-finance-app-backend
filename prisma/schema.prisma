@@ -63,9 +63,9 @@ model Account{
 
 model Transaction{
   id              Int           @id @default(autoincrement())
-  descriptioin    String        @db.VarChar(30)
+  description     String        @db.VarChar(30)
   value           Decimal       @db.Decimal(10,2)
-  dueData         DateTime
+  dueDate         String
   type            CategoryType
   wasConfirm      Boolean       @default(false)
 
