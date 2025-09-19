@@ -1,5 +1,6 @@
+import { Decimal } from "@prisma/client/runtime/library";
 import { Type } from "class-transformer";
-import { IsBoolean, IsDate, IsIn, IsNotEmpty, IsNumber, IsString, Matches, MaxLength, Min, MinLength } from "class-validator";
+import { IsBoolean, IsDate, IsIn, IsInt, IsNotEmpty, IsNumber, IsString, Matches, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class CreateTransactionDto{
   @IsString()
@@ -8,9 +9,15 @@ export class CreateTransactionDto{
   @IsNotEmpty()
   description: string;
 
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  installments: number
+
+  @Type(()=>Object)
   @IsNumber()
   @IsNotEmpty()
-  value: number;
+  value: Decimal;
 
   @IsString()
   @IsNotEmpty()

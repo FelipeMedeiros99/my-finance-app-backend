@@ -10,15 +10,14 @@ export class TransactionController {
   @Post()
   create(@Body() createTransactionDto: CreateTransactionDto, @Request() req: any) {
     const userData = req.user;
-    console.log(createTransactionDto)
     return this.transactionService.create(userData.id, createTransactionDto);
   }
 
-  // @Get()
-  // findAll(@Request() req: any, ) {
-  //   const userData = req.user;
-  //   return this.transactionService.findAll();
-  // }
+  @Get()
+  findAll(@Request() req: any, ) {
+    const userData = req.user;
+    return this.transactionService.findAll(userData.id);
+  }
 
   // @Get(':id')
   // findOne(@Request() req: any, @Param('id') id: string) {
