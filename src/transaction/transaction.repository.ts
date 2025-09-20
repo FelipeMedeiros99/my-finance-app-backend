@@ -7,12 +7,12 @@ import { Prisma, Transaction } from '@prisma/client';
 @Injectable()
 export class TransactionRespository {
   constructor(private readonly prisma: PrismaService) { }
-  
-  async create(userId:number, createTransactionDto: CreateTransactionDto) {
+
+  async create(userId: number, createTransactionDto: CreateTransactionDto) {
     return await this.prisma.transaction.create({
       data: {
         description: createTransactionDto.description,
-        value: createTransactionDto.value, 
+        value: createTransactionDto.value,
         dueDate: createTransactionDto.dueDate,
         type: createTransactionDto.type,
         wasConfirm: createTransactionDto.wasConfirm,
@@ -30,22 +30,25 @@ export class TransactionRespository {
     });
   }
 
-  findAll(userId: number, date?: Date, type?: "INCOME"|"EXPENSE") {
+  findAll(userId: number, query?: any) {
     const whereClause: Prisma.TransactionWhereInput = { userId };
+    const queryKeys = Object.keys(query)
 
-    if (date) {
-      date = new Date(date);
-      const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
-      const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 1)
-      whereClause.dueDate = {
-        gte: startDate,
-        lt: endDate
+    for (let key of queryKeys) {
+      if (key === "date") {
+        const date = new Date(query[key]);
+        const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
+        const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 1)
+        whereClause.dueDate = {
+          gte: startDate,
+          lt: endDate
+        }
+      } else if (!isNaN(Number(query[key]))) {
+        whereClause[key] = Number(query[key])
+      } else {
+        whereClause[key] = query[key]
       }
     }
-    if (type) {
-      whereClause.type = type;
-    }
-
 
     return this.prisma.transaction.findMany({
       where: whereClause,
@@ -59,11 +62,11 @@ export class TransactionRespository {
     });
   }
 
-  findOne(userId:number, id: number) {
+  findOne(userId: number, id: number) {
     return `This action returns a #${id} transaction`;
   }
 
-  async update(userId:number, id: number, updateTransactionDto: UpdateTransactionDto) {
+  async update(userId: number, id: number, updateTransactionDto: UpdateTransactionDto) {
     return await this.prisma.transaction.update({
       where: {
         userId,
@@ -81,7 +84,7 @@ export class TransactionRespository {
     })
   }
 
-  remove(userId:number, id: number) {
+  remove(userId: number, id: number) {
     return `This action removes a #${id} transaction`;
   }
 }

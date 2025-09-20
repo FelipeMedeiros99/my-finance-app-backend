@@ -45,9 +45,9 @@ export class TransactionService {
     }
   }
 
-  findAll(userId: number, date?: Date, type?: "INCOME"|"EXPENSE") {
+  findAll(userId: number, query?: any) {
     try{
-      return this.transactionRepository.findAll(userId, date, type)
+      return this.transactionRepository.findAll(userId, query)
     } catch (e) {
       if (e instanceof HttpException) throw e;
       this.logger.error("Error while get transactions: ", e)
