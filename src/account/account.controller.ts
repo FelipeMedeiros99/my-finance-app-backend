@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UsePipes, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UsePipes, ParseIntPipe, Put, Query } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { GetAccountDto } from './dto/get-account.dto';
 
 @Controller('account')
 export class AccountController {
@@ -14,9 +15,9 @@ export class AccountController {
   }
 
   @Get()
-  findAll(@Request() req: any) {
+  findAll(@Request() req: any, @Query() query: GetAccountDto) {
     const userData = req.user;
-    return this.accountService.findAll(userData.id);
+    return this.accountService.findAll(userData.id, query);
   }
 
   @Get("names")

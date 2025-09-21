@@ -2,6 +2,7 @@ import { HttpCode, HttpException, HttpStatus, Injectable, Logger } from '@nestjs
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountRepository } from './account.repository';
+import { GetAccountDto } from './dto/get-account.dto';
 
 @Injectable()
 export class AccountService {
@@ -22,9 +23,13 @@ export class AccountService {
     }
   }
 
-  async findAll(userId: number) {
+  async findAll(userId: number, query?: GetAccountDto) {
     try{
-      return await this.accountRepository.findAll(userId)
+      if(query){
+        return await this.accountRepository.findAllWithTransaction(userId, query)
+      }else{
+        return await this.accountRepository.findAll(userId)
+      }
     }catch(e){
       if(e instanceof HttpException) throw e;
       this.logger.error("error while trying to find all accounts")
