@@ -49,6 +49,7 @@ model Account{
   id              Int        @id @default(autoincrement())
   name            String     @db.VarChar(30)
   openingBalance  Decimal    @db.Decimal(10,2) @default(0)
+  createdAt       DateTime   @default(now())
 
 
   userId          Int
