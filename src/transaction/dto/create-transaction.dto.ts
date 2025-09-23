@@ -19,7 +19,8 @@ export class CreateTransactionDto{
   @IsNotEmpty()
   value: Decimal;
 
-  @IsString()
+  @Type(()=>Date)
+  @IsDate()
   @IsNotEmpty()
   dueDate: Date;
 

@@ -37,8 +37,12 @@ export class TransactionRespository {
     for (let key of queryKeys) {
       if (key === "date") {
         const date = new Date(query[key]);
+        date.setDate(1); 
         const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
         const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 1)
+        startDate.setHours(0, 0, 0, 0)
+        endDate.setHours(0, 0, 0, 0)
+        
         whereClause.dueDate = {
           gte: startDate,
           lt: endDate
