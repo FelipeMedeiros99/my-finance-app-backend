@@ -1,14 +1,10 @@
-import { Body, Controller, Delete, Get, Headers, Param, ParseIntPipe, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateCategoryDto } from './dto/create-category-dto';
 import { UpdateCategoryDto } from './dto/update-category-dto';
-
-
-type UserDataToken = {
-  username: string,
-  id: number
-}
+import { User } from 'src/auth/auth.decorator';
+import { UserPayload } from 'src/@types/express';
 
 @Controller('category')
 @UseGuards(AuthGuard)
@@ -18,41 +14,36 @@ export class CategoryController {
   ) {}
 
   @Get()
-  findAll(@Request() req: any) {
-    const userData = req.user;
-    return this.categoryService.findAll(userData.id);
+  findAll(@User() user: UserPayload) {
+    console.log(user)
+    return this.categoryService.findAll(user.id);
   }
 
   @Get("names")
-  findNames(@Request() req: any, @Query("type") type: string) {
-    const userData = req.user;
-    return this.categoryService.findNames(userData.id, type);
+  findNames(@User() user: UserPayload, @Query("type") type: string) {
+    return this.categoryService.findNames(user.id, type);
   }
 
   @Get(":id")
-  find(@Param("id", ParseIntPipe) id: number, @Request() req: any) {
-    const userData = req.user;
-    return this.categoryService.find(userData.id, id);
+  find(@Param("id", ParseIntPipe) id: number, @User() user: UserPayload) {
+    return this.categoryService.find(user.id, id);
   }
 
   @Post()
-  create(@Body() body: CreateCategoryDto, @Request() req: any) {
-    const userData = req.user;
+  create(@Body() body: CreateCategoryDto, @User() user: UserPayload) {
 
-    return this.categoryService.create(userData.id, body);
+    return this.categoryService.create(user.id, body);
   }
 
   @Put(":id")
-  update(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateCategoryDto, @Request() req: any) {
-    const userData = req.user;
+  update(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateCategoryDto, @User() user: UserPayload) {
 
-    return this.categoryService.update(userData.id, id, body);
+    return this.categoryService.update(user.id, id, body);
   }
 
   @Delete(":id")
-  delete(@Param("id", ParseIntPipe) id: number, @Request() req: any){
+  delete(@Param("id", ParseIntPipe) id: number, @User() user: UserPayload){
     
-    const userData = req.user;
-    return this.categoryService.delete(userData.id, id);
+    return this.categoryService.delete(user.id, id);
   }
 }

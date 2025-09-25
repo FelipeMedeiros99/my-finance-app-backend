@@ -1,39 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Query, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, Put } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { User } from 'src/auth/auth.decorator';
+import { UserPayload } from 'src/@types/express';
 
 @Controller('transaction')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Post()
-  create(@Body() createTransactionDto: CreateTransactionDto, @Request() req: any) {
-    const userData = req.user;
-    return this.transactionService.create(userData.id, createTransactionDto);
+  create(@Body() createTransactionDto: CreateTransactionDto, @User() user: UserPayload) {
+    return this.transactionService.create(user.id, createTransactionDto);
   }
 
   @Get()
-  findAll(@Request() req: any, @Query() query?: any) {
-    const userData = req.user;
-    return this.transactionService.findAll(userData.id, query);
+  findAll(@User() user: any, @Query() query?: UserPayload) {
+    return this.transactionService.findAll(user.id, query);
   }
 
   // @Get(':id')
-  // findOne(@Request() req: any, @Param('id') id: string) {
-  //   const userData = req.user;
+  // findOne(@User() user: UserPayload, @Param('id') id: string) {
   //   return this.transactionService.findOne(+id);
   // }
 
   @Put(':id')
-  update(@Request() req: any, @Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {
-    const userData = req.user;
-    return this.transactionService.update(userData.id, +id, updateTransactionDto);
+  update(@User() user: UserPayload, @Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {
+    return this.transactionService.update(user.id, +id, updateTransactionDto);
   }
 
   // @Delete(':id')
-  // remove(@Request() req: any, @Param('id') id: string) {
-  //   const userData = req.user;
+  // remove(@User() user: UserPayload, @Param('id') id: string) {
   //   return this.transactionService.remove(+id);
   // }
 }
