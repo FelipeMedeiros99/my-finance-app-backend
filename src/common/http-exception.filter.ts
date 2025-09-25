@@ -19,11 +19,23 @@ export class CatchEverythingFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost;
 
     const ctx = host.switchToHttp();
+    const request = ctx.getRequest();
 
-    const httpStatus =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+    let httpStatus: number;
+    let message: any;
+
+    if(exception instanceof HttpException){
+      httpStatus = exception.getStatus();
+      const response = exception?.getResponse() as any;
+      if(response.message){
+        message = response.message;
+      }else{
+        message = response;
+      }
+    }else{
+      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = 'Internal Server Error';
+    }
 
     if(httpStatus === HttpStatus.INTERNAL_SERVER_ERROR){
       this.logger.error(exception)
@@ -31,11 +43,10 @@ export class CatchEverythingFilter implements ExceptionFilter {
 
     const responseBody = {
       statusCode: httpStatus,
+      message,
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
     };
-
-
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
