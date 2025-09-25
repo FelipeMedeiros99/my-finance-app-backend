@@ -7,7 +7,6 @@ import { User } from 'src/auth/auth.decorator';
 import { UserPayload } from 'src/@types/express';
 
 @Controller('category')
-@UseGuards(AuthGuard)
 export class CategoryController {
   constructor(
     private readonly categoryService: CategoryService
