@@ -84,7 +84,8 @@ model Card{
   id            Int           @id @default(autoincrement())
   name          String        @db.VarChar(30)
   limit         Decimal       @db.Decimal(10,2)
-  closeDate     Int           @db.SmallInt()
+  closeDay      Int           @db.SmallInt()
+  dueDay        Int           @db.SmallInt()
 
   userId        Int
   user          User          @relation(fields: [userId], references: [id])
