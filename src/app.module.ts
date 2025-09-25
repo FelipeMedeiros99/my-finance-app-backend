@@ -6,6 +6,7 @@ import { CategoryModule } from './category/category.module';
 import { AccountModule } from './account/account.module';
 import { GetUserDataMiddleware } from './app.middleware';
 import { TransactionModule } from './transaction/transaction.module';
+import { CardModule } from './card/card.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { TransactionModule } from './transaction/transaction.module';
     JwtModule.register({
       global: true,
       secret: process.env.SECRET
-    }), AccountModule, TransactionModule,
+    }), AccountModule, TransactionModule, CardModule,
   ],
   controllers: [],
   providers: [],
