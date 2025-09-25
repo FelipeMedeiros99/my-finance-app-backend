@@ -6,6 +6,7 @@ import { CategoryModule } from './category/category.module';
 import { AccountModule } from './account/account.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { CardModule } from './card/card.module';
+import { CatchEverythingFilter } from './common/http-exception.filter';
 
 @Module({
   imports: [
@@ -18,6 +19,11 @@ import { CardModule } from './card/card.module';
     }), AccountModule, TransactionModule, CardModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: "APP_FILTER",
+      useClass: CatchEverythingFilter,
+    }
+  ],
 })
 export class AppModule {}

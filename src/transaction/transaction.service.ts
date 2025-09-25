@@ -11,8 +11,6 @@ export class TransactionService {
 
 
   async create(userId: number, createTransactionDto: CreateTransactionDto) {
-
-    try {
       const transactions: Omit<Transaction, "id">[] = [];
       const { accountId, categoryId, description, dueDate, type, value, wasConfirm, installments } = createTransactionDto;
 
@@ -56,14 +54,7 @@ export class TransactionService {
       
       // console.log(transactions)
 
-      return await this.transactionRepository.createMany(transactions);
-
-    } catch (e) {
-      if (e instanceof HttpException) throw e;
-      this.logger.error("Error while create transaction: ", e);
-      throw new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    
+      return await this.transactionRepository.createMany(transactions);    
     // let { accountId, categoryId, description, dueDate, type, value, wasConfirm } = createTransactionDto;
     
     // try {
@@ -105,13 +96,8 @@ export class TransactionService {
   }
 
   findAll(userId: number, query?: any) {
-    try{
-      return this.transactionRepository.findAll(userId, query)
-    } catch (e) {
-      if (e instanceof HttpException) throw e;
-      this.logger.error("Error while get transactions: ", e)
-      throw new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return this.transactionRepository.findAll(userId, query)
+
   }
 
   findOne(userId: number, id: number) {
