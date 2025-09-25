@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class CreateCardDto {
   @IsNotEmpty()
@@ -12,8 +12,15 @@ export class CreateCardDto {
   @IsNotEmpty()
   limit: number;
 
-  @Type(()=>Date)
   @IsNotEmpty()
-  @IsDate()
-  closeDate: Date;
+  @IsNumber()
+  @Max(31)
+  @Min(1)
+  closeDay: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Max(31)
+  @Min(1)
+  dueDay: number;
 }
