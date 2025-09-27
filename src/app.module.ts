@@ -9,6 +9,7 @@ import { CardModule } from './card/card.module';
 import { CatchEverythingFilter } from './common/http-exception.filter';
 import { AuthGuard } from './auth/auth.guard';
 import { CardExpenseModule } from './card-expense/card-expense.module';
+import { CardPaymentModule } from './card-payment/card-payment.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { CardExpenseModule } from './card-expense/card-expense.module';
       global: true,
       secret: process.env.SECRET
     }),
-    CardExpenseModule, 
+    CardExpenseModule,
+    CardPaymentModule, 
   ],
   controllers: [],
   providers: [

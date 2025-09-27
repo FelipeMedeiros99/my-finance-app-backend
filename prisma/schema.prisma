@@ -18,6 +18,7 @@ model User{
   transaction     Transaction[]
   card            Card[]
   cardExpense     CardExpense[]
+  cardPayment     CardPayment[]
 
   @@map("user")
 }
@@ -127,6 +128,10 @@ model CardPayment{
 
   cardId          Int
   card            Card          @relation(fields: [cardId], references: [id])
+
+  userId        Int
+  user          User          @relation(fields: [userId], references: [id])
+
 
   @@map("cardPayment")
 }
