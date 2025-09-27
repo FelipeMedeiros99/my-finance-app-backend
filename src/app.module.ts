@@ -8,6 +8,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { CardModule } from './card/card.module';
 import { CatchEverythingFilter } from './common/http-exception.filter';
 import { AuthGuard } from './auth/auth.guard';
+import { CardExpenseModule } from './card-expense/card-expense.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { AuthGuard } from './auth/auth.guard';
     JwtModule.register({
       global: true,
       secret: process.env.SECRET
-    }), 
+    }),
+    CardExpenseModule, 
   ],
   controllers: [],
   providers: [

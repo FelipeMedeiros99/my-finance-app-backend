@@ -15,8 +15,8 @@ export class CardController {
   }
 
   @Get()
-  async findAll(@User() user: UserPayload) {
-    return await this.cardService.findAll(user.id);
+  findAll(@User() user: UserPayload) {
+    return this.cardService.findAll(user.id);
   }
 
   @Get(':id')
