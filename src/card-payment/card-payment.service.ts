@@ -1,18 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCardPaymentDto } from './dto/create-card-payment.dto';
 import { UpdateCardPaymentDto } from './dto/update-card-payment.dto';
-import { PrismaClient } from '@prisma/client/extension';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CardPaymentService {
-  constructor (private readonly prisma: PrismaClient) {}
+  constructor (private readonly prisma: PrismaService) {}
 
   create(userId: number, createCardPaymentDto: CreateCardPaymentDto) {
+    const {value, date, cardId, accountId} = createCardPaymentDto;
     return this.prisma.cardPayment.create({
-      where: {
+      data: {
+        value, 
+        date,
+        cardId,
+        accountId,
         userId
-      },
-      data: createCardPaymentDto
+      }
     })
   }
 
